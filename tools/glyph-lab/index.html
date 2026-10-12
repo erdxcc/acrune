@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Glyph lab</title>
+    <style>
+      :root {
+        --bg: #141019;
+        --panel: #221a2e;
+        --text: #f3ead2;
+        --dim: #9a8fae;
+        --gold: #e0b44c;
+        --bad: #e0614f;
+        --good: #7bd36a;
+        --parchment: #e9dcb8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 14px/1.4 system-ui, sans-serif;
+      }
+      main {
+        display: grid;
+        grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+        gap: 16px;
+        padding: 16px;
+      }
+      @media (max-width: 800px) {
+        main {
+          grid-template-columns: 1fr;
+          padding: 12px;
+        }
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0 0 8px;
+        color: var(--gold);
+      }
+      h2 {
+        font-size: 14px;
+        margin: 16px 0 6px;
+        color: var(--dim);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      canvas {
+        background: var(--parchment);
+        border-radius: 50%;
+        touch-action: none;
+        display: block;
+        max-width: 100%;
+      }
+      section {
+        background: var(--panel);
+        border-radius: 8px;
+        padding: 12px;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin: 6px 0;
+      }
+      button,
+      select,
+      input {
+        font: inherit;
+        color: var(--text);
+        background: #3a2d4a;
+        border: 1px solid var(--dim);
+        border-radius: 6px;
+        padding: 6px 10px;
+      }
+      input[type='number'] {
+        width: 64px;
+      }
+      button:hover {
+        border-color: var(--text);
+      }
+      table {
+        border-collapse: collapse;
+        font-variant-numeric: tabular-nums;
+      }
+      td,
+      th {
+        border: 1px solid #3a2d4a;
+        padding: 4px 8px;
+        text-align: right;
+      }
+      th {
+        color: var(--dim);
+        font-weight: normal;
+      }
+      .result {
+        font-size: 20px;
+      }
+      .dim {
+        color: var(--dim);
+      }
+      .good {
+        color: var(--good);
+      }
+      .bad {
+        color: var(--bad);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>
+        <h1>Glyph lab</h1>
+        <canvas id="pad" width="360" height="360"></canvas>
+        <div class="row">
+          <label>Mode <select id="mode">
+            <option value="test">Test</option>
+            <option value="sample">Record sample</option>
+            <option value="template">Set template</option>
+          </select></label>
+          <label>Glyph <select id="glyph">
+            <option value="fire">fire △</option>
+            <option value="water">water ∿</option>
+            <option value="air">air (spiral)</option>
+            <option value="earth">earth (mountains)</option>
+          </select></label>
+        </div>
+        <div class="row">
+          <label>Person <input id="person" placeholder="name" /></label>
+        </div>
+        <div class="result" id="result">Draw a glyph in the circle.</div>
+        <div class="dim" id="ranking"></div>
+      </div>
+      <div>
+        <section>
+          <h2>Thresholds</h2>
+          <div class="row">
+            <label>precise <input id="t-precise" type="number" value="85" /></label>
+            <label>normal <input id="t-normal" type="number" value="70" /></label>
+            <label>sloppy <input id="t-sloppy" type="number" value="55" /></label>
+            <label>gap <input id="t-gap" type="number" value="8" /></label>
+            <label>zero RMS <input id="t-rms" type="number" step="0.01" value="0.3" /></label>
+          </div>
+          <div class="row">
+            <label><input id="use-defaults" type="checkbox" checked /> default templates</label>
+            <span class="dim" id="template-count"></span>
+            <button id="clear-templates">Clear my templates</button>
+          </div>
+          <h2>Samples</h2>
+          <div id="summary" class="dim"></div>
+          <div id="matrix"></div>
+          <div class="row">
+            <button id="synthetic">Synthetic check</button>
+            <button id="export">Download JSON</button>
+            <label>Import <input id="import" type="file" accept="application/json" /></label>
+            <button id="undo">Delete last sample</button>
+          </div>
+          <div id="synthetic-out"></div>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
