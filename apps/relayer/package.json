@@ -1,0 +1,36 @@
+{
+  "name": "@grimoire/relayer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/server.ts",
+    "start": "tsx --env-file=.env src/server.ts",
+    "build": "node scripts/build-vercel.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "keygen": "tsx scripts/keygen.ts",
+    "airdrop": "tsx --env-file=.env scripts/airdrop.ts",
+    "collection": "tsx --env-file=.env scripts/create-collection.ts",
+    "spike": "tsx --env-file=.env scripts/spike.ts",
+    "seed": "tsx --env-file=.env scripts/seed.ts"
+  },
+  "dependencies": {
+    "@grimoire/glyphs": "workspace:*",
+    "@hono/node-server": "^2.1.4",
+    "@metaplex-foundation/mpl-core": "^1.10.0",
+    "@metaplex-foundation/umi": "^1.6.0",
+    "@metaplex-foundation/umi-bundle-defaults": "^1.6.0",
+    "hono": "^4.13.13",
+    "pngjs": "^7.0.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/pngjs": "^6.0.5",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "^5.0.3"
+  }
+}
