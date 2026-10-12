@@ -1,4 +1,8 @@
+![Acrune: magic is drawn](docs/banner.png)
+
 # Acrune
+
+**[Play on idosgames.com](https://idosgames.com/app/BVTWU78A/)** or [full screen](https://acrunee.vercel.app/).
 
 A pixel-art battle game where magic is drawn. Built for the Superteam Kazakhstan × iDos Games side track of the Solana hackathon.
 
@@ -36,7 +40,7 @@ Devnet addresses:
 
 - Collection: [`D5kYrvq47QFuqrNyj7TVT3mgWHCqqebuYDaPyvFgxJDo`](https://explorer.solana.com/address/D5kYrvq47QFuqrNyj7TVT3mgWHCqqebuYDaPyvFgxJDo?cluster=devnet)
 - Relayer key (pays fees, collection authority): [`EFWUBnDzrPTASEFQwBmZ9UnxCWo9GhZNc7kQhqvApth3`](https://explorer.solana.com/address/EFWUBnDzrPTASEFQwBmZ9UnxCWo9GhZNc7kQhqvApth3?cluster=devnet)
-- Relayer URL: to be deployed
+- Relayer: https://acrunee.vercel.app ([health](https://acrunee.vercel.app/health), [collection metadata](https://acrunee.vercel.app/meta/collection.json))
 
 `pnpm spike` in `apps/relayer` checks the whole cycle on devnet: it creates a grimoire for a throwaway wallet (two transactions: the asset with its plugins, then the pages), updates pages and attributes in one transaction, reads everything back, and has the owner try to transfer and burn it. Both are rejected by the freeze plugin (`permanent_freeze_delegate.rs: Reject` in the program log).
 
