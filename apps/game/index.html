@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#141019" />
+    <title>Acrune</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #141019;
+        overflow: hidden;
+        overscroll-behavior: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+      }
+      #game {
+        position: fixed;
+        inset: 0;
+      }
+      canvas {
+        touch-action: none;
+        image-rendering: pixelated;
+      }
+      #rotate {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: #141019;
+        color: #f3ead2;
+        font: 16px/1.5 monospace;
+        text-align: center;
+      }
+      @media (orientation: portrait) and (pointer: coarse) {
+        #rotate {
+          display: flex;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <div id="rotate">Turn your phone sideways to play.</div>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
