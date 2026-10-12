@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build.zip
+*.tsbuildinfo
+.vercel/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+# local keypairs and secrets
+*.keypair.json
+apps/relayer/.keys/
+.vitest/

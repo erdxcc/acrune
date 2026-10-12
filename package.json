@@ -1,0 +1,20 @@
+{
+  "name": "grimoire",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @grimoire/game dev",
+    "dev:lab": "pnpm --filter @grimoire/glyph-lab dev",
+    "dev:relayer": "pnpm --filter @grimoire/relayer dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}
