@@ -8,7 +8,7 @@
     }
   },
   "redirects": [
-    { "source": "/", "destination": "https://idosgames.com/app/BVTWU78A/", "permanent": false }
+    { "source": "/", "destination": "https://bvtwu78a.idos.games/", "permanent": false }
   ],
   "rewrites": [
     { "source": "/(.*)", "destination": { "service": "relayer" } }
