@@ -23,7 +23,7 @@ Superteam Kazakhstan × iDos Games side track.
 | Name | Role | Contact |
 |------|------|---------|
 | Yerdaulet Zhumagali | Code, gameplay, Solana and iDos integration | [GitHub](https://github.com/erdxcc) |
-| Zhalel Nabiulla | Art, animation and music | @nabichoktr |
+| Nabiulla Zhalel | Art, animation and music | @nabichoktr |
 
 ---
 
@@ -185,7 +185,7 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md)
 
 ## Credits
 
-- Art, animation and music: Zhalel Nabiulla.
+- Art, animation and music: Nabiulla Zhalel.
 - Pixel font: Press Start 2P by CodeMan38, SIL Open Font License (`apps/game/public/fonts/OFL.txt`).
 - Glyph recognition after $Q (Vatavu, Anthony, Wobbrock, 2018).
 
@@ -193,4 +193,4 @@ Full roadmap: [docs/roadmap.md](docs/roadmap.md)
 
 ## License
 
-The code is MIT, see [LICENSE](LICENSE). The art and music are not covered by it: the sources in `assets/` and the sprites, backgrounds and music made from them (`apps/game/public/assets`, `apps/game/public/audio`) belong to Zhalel Nabiulla. The font keeps its own SIL Open Font License.
+The code is MIT, see [LICENSE](LICENSE). The art and music are not covered by it: the sources in `assets/` and the sprites, backgrounds and music made from them (`apps/game/public/assets`, `apps/game/public/audio`) belong to Nabiulla Zhalel. The font keeps its own SIL Open Font License.
