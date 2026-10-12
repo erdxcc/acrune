@@ -1,16 +1,76 @@
+# Acrune: Magic Is Drawn
+
+[![CI](https://github.com/erdxcc/acrune/actions/workflows/ci.yml/badge.svg)](https://github.com/erdxcc/acrune/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-14F195.svg)](LICENSE)
+[![Solana](https://img.shields.io/badge/Solana-devnet-9945FF)](https://explorer.solana.com/address/D5kYrvq47QFuqrNyj7TVT3mgWHCqqebuYDaPyvFgxJDo?cluster=devnet)
+[![iDos Games](https://img.shields.io/badge/iDos%20Games-live-E0B44C)](https://idosgames.com/app/BVTWU78A/)
+[![Colosseum](https://img.shields.io/badge/Colosseum-Crypto%20World%27s%20Fair-14F195)](https://www.colosseum.com)
+
+> A pixel-art battle game where every spell is a glyph you draw, and your grimoire lives on Solana as a soulbound NFT filled with your own strokes.
+
+[Play on idosgames.com](https://idosgames.com/app/BVTWU78A/) · [Full screen](https://acrunee.vercel.app/) · [Docs](docs/) · [Grimoire collection](https://explorer.solana.com/address/D5kYrvq47QFuqrNyj7TVT3mgWHCqqebuYDaPyvFgxJDo?cluster=devnet)
+
+---
+
 ![Acrune: magic is drawn](docs/banner.png)
 
-# Acrune
+---
 
-**[Play on idosgames.com](https://idosgames.com/app/BVTWU78A/)** or [full screen](https://acrunee.vercel.app/).
+## Submission to the Colosseum Crypto World's Fair
 
-A pixel-art battle game where magic is drawn. Built for the Superteam Kazakhstan × iDos Games side track of the Solana hackathon.
+Superteam Kazakhstan × iDos Games side track.
 
-You are the last scribe of an order of mages. Enemies stand along the road and hurl spells at you, and you answer by drawing elemental glyphs in the magic circle of your grimoire. The cleaner the glyph, the stronger the spell. Every element has an opposite, and drawing the opposite of an enemy's cast in time parries it.
+| Name | Role | Contact |
+|------|------|---------|
+| Yerdaulet Zhumagali | Code, gameplay, Solana and iDos integration | [GitHub](https://github.com/erdxcc) |
+| Zhalel Nabiulla | Art, animation and music | @nabichoktr |
 
-**Your grimoire lives on Solana.** It is a soulbound NFT in your wallet, and every page holds a glyph drawn by your own hand: the best drawing of each spell you have learned, checked by the game server before it is written. No two grimoires look alike.
+---
 
-## How to play
+## Problem and Solution
+
+### 1. Wallets get in the way of playing
+- **Problem:** web3 games ask for a wallet, a signature and gas before the first battle, and inside a portal's iframe a game cannot ask a wallet to sign at all.
+- **Acrune:** you start as a guest and can play the whole chapter. A relayer signs and pays for every write, and you link a wallet when you want your grimoire on chain.
+
+### 2. NFTs are bought, not made
+- **Problem:** most game NFTs are items anyone can buy, so they say nothing about the player who holds them.
+- **Acrune:** the grimoire is soulbound and every page is a glyph drawn by its owner's hand. Its image is rendered from those strokes, so no two grimoires look alike.
+
+### 3. On-chain progress is easy to fake
+- **Problem:** when the client reports the result, anyone can write a win they never earned.
+- **Acrune:** the relayer checks the iDos session with iDos, takes the wallet the player linked by signature, re-recognises every drawing and counts a win only when it is plausible.
+
+### 4. Spells are just buttons
+- **Problem:** in most battle games casting a spell means pressing a button, so skill comes down to timing.
+- **Acrune:** magic is drawn. Precise glyphs hit harder, two crossed glyphs make a combination, and the opposite element drawn in time parries an enemy's cast.
+
+---
+
+## Why Solana
+
+- **Metaplex Core** keeps a whole grimoire in one asset: `AppData` holds the pages, `Attributes` the chapter stats, and `PermanentFreezeDelegate` on the collection makes every grimoire soulbound.
+- **Cheap, fast writes** let the relayer pay for every page a player earns and confirm it while the result screen is still up.
+- **Wallets linked through iDos** tell the relayer whose grimoire to write without trusting the client.
+- **Same code on mainnet:** a wallet has the same address on every cluster, so moving takes a new RPC URL and collection, not new code.
+
+---
+
+## Summary of Features
+
+- Four elements drawn as one-stroke glyphs and recognised by a $Q point-cloud recognizer, with a finger or a mouse
+- Accuracy scoring: precise drawings hit 1.5× harder, sloppy ones can backfire
+- Combinations by crossing two glyphs: steam, ice and magma
+- Parries: draw the opposite element before an enemy's spell lands
+- Chapter 1: four locations, enemies one at a time, a boss whose weakness changes between phases
+- Spell pages to choose before each battle, within a page limit that grows through the chapter
+- A soulbound grimoire NFT on Solana with your best drawing of each spell
+- Gasless writes through a relayer that checks everything with iDos first
+- Guest play on iDos Games, wallet linking later, and an offline mode for development
+
+---
+
+## How to Play
 
 - Draw inside the circle on the grimoire page (finger or mouse). Each glyph is one stroke of straight lines; the dot on its picture in the grimoire shows where to start:
   - fire: a step ‾|_ (a bar to the left at the top, down, a bar to the right)
@@ -25,24 +85,22 @@ You are the last scribe of an order of mages. Enemies stand along the road and h
 
 The chapter has four locations, and their enemies come out one at a time, each walking in after the last one falls: three slime mages; two slimes and then a skeleton mage; skeleton, skeleton mage, skeleton; and the boss, whose weakness changes between phases. The preparation screen shows each enemy's weakness and the glyphs that parry its spells. The first battle teaches drawing and then parrying (it pauses on the first enemy cast); the third teaches combinations with a hand that draws one.
 
-## Solana integration
+---
 
-| What | How |
-|---|---|
-| Grimoire | One Metaplex Core asset per wallet in the **Acrune Grimoires** collection on devnet. The collection carries `PermanentFreezeDelegate` (frozen, no authority), so grimoires are **soulbound**: the program rejects any transfer or burn. |
-| Pages | `AppData` plugin, binary format v1: up to 12 pages × 54 bytes. Each page holds the spell ID, accuracy, drawing time and 24 points of the player's own stroke. |
-| Stats | `Attributes` plugin: Chapter 1, Boss, Spells, Accuracy, Parries, Best time, Format. |
-| Image | Rendered by the relayer from the on-chain strokes (`/img/<asset>.png`), so every grimoire is unique. |
-| Who writes | A relayer signs and pays. The player signs nothing and pays nothing. That is also why it works inside the idosgames.com iframe, where a game cannot ask the wallet to sign. |
-| Anti-cheat | The relayer checks the player's iDos session ticket with iDos itself. It reads the wallet the player linked to iDos by signature, never an address the client claims. It re-recognises every drawing with the same recognizer (score ≥ 70 and the right spell) and counts a win only when it is plausible: battles in order, a minimum duration measured on the relayer's clock, sane stats. Progress travels as an HMAC-signed token kept in the player's iDos data, so no database is needed. |
+## Tech Stack
 
-Devnet addresses:
+| Layer | Technology |
+|-------|-----------|
+| Game | TypeScript · Phaser 4 · Vite |
+| Glyph recognition | $Q point-cloud recognizer written for the game (`packages/glyphs`) |
+| Battle | Deterministic simulation at 60 Hz in plain TypeScript |
+| Relayer | Node.js · Hono · Vercel |
+| On-chain | Solana devnet · Metaplex Core · Umi |
+| Platform | iDos Games: hosting, accounts, saves, linked wallets |
+| Testing | Vitest · GitHub Actions |
+| Art pipeline | Python (uv) converter for the artist's sources |
 
-- Collection: [`D5kYrvq47QFuqrNyj7TVT3mgWHCqqebuYDaPyvFgxJDo`](https://explorer.solana.com/address/D5kYrvq47QFuqrNyj7TVT3mgWHCqqebuYDaPyvFgxJDo?cluster=devnet)
-- Relayer key (pays fees, collection authority): [`EFWUBnDzrPTASEFQwBmZ9UnxCWo9GhZNc7kQhqvApth3`](https://explorer.solana.com/address/EFWUBnDzrPTASEFQwBmZ9UnxCWo9GhZNc7kQhqvApth3?cluster=devnet)
-- Relayer: https://acrunee.vercel.app ([health](https://acrunee.vercel.app/health), [collection metadata](https://acrunee.vercel.app/meta/collection.json))
-
-`pnpm spike` in `apps/relayer` checks the whole cycle on devnet: it creates a grimoire for a throwaway wallet (two transactions: the asset with its plugins, then the pages), updates pages and attributes in one transaction, reads everything back, and has the owner try to transfer and burn it. Both are rejected by the freeze plugin (`permanent_freeze_delegate.rs: Reject` in the program log).
+---
 
 ## Architecture
 
@@ -56,24 +114,27 @@ Browser / idosgames.com iframe            Relayer (Vercel, Hono)                
 └──────────────────────────────┘          └──────────────────────────────┘
 ```
 
-| Path | What |
-|---|---|
-| `packages/glyphs` | Shared by the game and the relayer: the $Q point-cloud recognizer, glyph templates, page codec, spell IDs and chapter progression. |
-| `apps/game` | The game: scenes, deterministic battle simulation, stroke input, content data (zod schemas), iDos login and saves. |
-| `apps/relayer` | HTTP API, signed tokens, iDos checks, Metaplex Core writes, NFT metadata and image. |
-| `tools/glyph-lab` | A page for recording glyph samples and checking the recognizer's confusion matrix. |
-| `tools/art` | Converts the artist's sources in `assets/` into the game's sprite strips. |
+See [docs/architecture.md](docs/architecture.md) for the components, the on-chain format, the anti-cheat checks and deployment, and [docs/api.md](docs/api.md) for the relayer's endpoints.
 
-The game runs offline when no iDos title is configured. Saves then go to `localStorage` and Solana sync is off, which is handy for development.
+---
 
-## Running locally
+## Quick Start
 
-Requirements: Node 20+, pnpm 9.
+**Prerequisites:** Node.js 20+, pnpm 9
 
 ```bash
+# Clone the repository
+git clone https://github.com/erdxcc/acrune
+cd acrune
+
+# Install dependencies
 pnpm install
-pnpm test                 # all unit tests
-pnpm dev                  # the game on http://localhost:5173 (offline mode)
+
+# Run the tests
+pnpm test
+
+# Start the game on http://localhost:5173 (offline mode)
+pnpm dev
 ```
 
 Relayer with devnet writes:
@@ -96,44 +157,40 @@ VITE_RELAYER_URL=http://localhost:8787
 
 The glyph recognizer can be evaluated on synthetic drawings with `pnpm --filter @grimoire/glyphs evaluate`.
 
-## Art pipeline
+---
 
-The artist delivers pixel art upscaled to 1024×1024 on a black background: JPEG stills and MP4 loops in `assets/`, named `<enemy><animation>` (`skeletonmagebreath.mp4`, `bossbreath.mp4`), `<animation>mc` for the hero, `mcattack<element>` and `mcattack<element>+<element>` for spell flights, and `<ordinal>location` (`firstlocation.jpeg`) for a battle's background. New files are picked up by name. `uv run tools/art/convert.py` turns them into the game's files:
+## Roadmap
 
-- finds the art-pixel size from where the colour edges fall (8 px for the 128×128 hero, 4 px for the 256×256 background);
-- takes the median colour inside each art pixel, which removes JPEG and H.264 noise, then snaps colours to the set's palette and keys out the black;
-- splits a video into its distinct poses and the order they play in (the idle loop is 4 poses, the casting loop 3 poses played 0-1-2-1-2-1);
-- crops every frame of a set to one shared box with the feet on one line, and writes horizontal strips to `apps/game/public/assets` with their entries in `apps/game/src/assets/manifest.json`.
+- [x] Glyph recognizer, combinations and parries
+- [x] Chapter 1: four locations and a boss with phases
+- [x] Soulbound grimoire on Solana devnet, written by a gasless relayer
+- [x] Live on iDos Games
+- [ ] Grimoires on mainnet
+- [ ] More chapters, each with its own boss
+- [ ] The rest of the combinations
 
-It also cuts the spell flights (the four elements, steam, ice and magma) out of their clips into a looping flight and an impact, and re-encodes the music. A location without its painting shows the chapter background; the boss flashes white when it changes phase, which has no drawing yet. The grimoire painting (`grimour.jpeg`) keeps its black outside transparent and lies under the battle's pages, its crease on the spine between the spell list and the circle. The game draws a coloured placeholder for anything the manifest has no file for, so art drops in by file. Animation-to-source mapping lives at the top of the script.
+Full roadmap: [docs/roadmap.md](docs/roadmap.md)
 
-## Deployment
+---
 
-- **Game.** `pnpm --filter @grimoire/game build`, zip the contents of `apps/game/dist` (with `index.html` at the root of the archive) and upload it through the iDos Title MCP (`begin_build_upload` → PUT → `finish_build_upload`). The title is detected from the host name (`{titleid}.idos.games`).
-- **Relayer.** A Vercel project for the whole repository: `vercel.json` declares one service, `relayer` (`apps/relayer`, Hono, entry `src/vercel.ts`), and sends every path to it, so the routes stay at the root of the domain. Vercel installs the workspace and bundles the entry; the root `package.json` pins `uuid` 11 under `rpc-websockets`, because Vercel's Node cannot `require()` the ES-only uuid 14. Set the variables from `apps/relayer/.env.example` except `PUBLIC_BASE_URL` (on Vercel, metadata links follow the project's production domain), and add the relayer's host to the title's `Blockchain.IframeConnectHosts` so the game can reach it from inside the iframe. For local work use `pnpm dev`; `vercel dev` picks `src/app.ts` by Hono's file naming instead of the configured entry.
+## Resources
 
-## Environment variables
+- [Play on idosgames.com](https://idosgames.com/app/BVTWU78A/)
+- [Full screen](https://acrunee.vercel.app/)
+- [Grimoire collection on Solana Explorer](https://explorer.solana.com/address/D5kYrvq47QFuqrNyj7TVT3mgWHCqqebuYDaPyvFgxJDo?cluster=devnet)
+- [Relayer health](https://acrunee.vercel.app/health)
+- [Product](docs/product.md) · [Architecture](docs/architecture.md) · [API](docs/api.md) · [Submission texts](docs/submission.md)
 
-| Variable | Where | Meaning |
-|---|---|---|
-| `VITE_IDOS_TITLE_ID` | game | Title for local development; on iDos hosting it comes from the host name |
-| `VITE_RELAYER_URL` | game | Relayer base URL; empty turns Solana features off |
-| `SOLANA_RPC_URL` | relayer | Devnet RPC |
-| `RELAYER_SECRET_KEY` | relayer | 64-byte keypair as a JSON array; pays fees and owns the collection |
-| `ASSET_SEED_SECRET` | relayer | Derives each wallet's grimoire address |
-| `TOKEN_HMAC_SECRET` | relayer | Signs run and progress tokens |
-| `COLLECTION_ADDRESS` | relayer | The Acrune Grimoires collection (`pnpm collection` creates it, or updates its name and URI when it exists) |
-| `PUBLIC_BASE_URL` | relayer | Public URL of the relayer, used in NFT metadata; on Vercel the production domain is used instead |
-| `GAME_URL` | relayer | The game's page, linked from the metadata |
-| `IDOS_API_BASE` | relayer | `https://api.idosgames.com` |
-| `ALLOWED_TITLES` | relayer | Comma-separated iDos title IDs the relayer serves |
+---
 
 ## Credits
 
-- Character and background art: the Acrune team.
+- Art, animation and music: Zhalel Nabiulla.
 - Pixel font: Press Start 2P by CodeMan38, SIL Open Font License (`apps/game/public/fonts/OFL.txt`).
 - Glyph recognition after $Q (Vatavu, Anthony, Wobbrock, 2018).
 
+---
+
 ## License
 
-To be decided by the team.
+The code is MIT, see [LICENSE](LICENSE). The art and music are not covered by it: the sources in `assets/` and the sprites, backgrounds and music made from them (`apps/game/public/assets`, `apps/game/public/audio`) belong to Zhalel Nabiulla. The font keeps its own SIL Open Font License.
