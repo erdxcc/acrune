@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
     "start": "tsx --env-file=.env src/server.ts",
-    "build": "node scripts/build-vercel.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "keygen": "tsx scripts/keygen.ts",
@@ -28,7 +27,6 @@
   "devDependencies": {
     "@types/node": "^20.19.0",
     "@types/pngjs": "^6.0.5",
-    "esbuild": "^0.28.2",
     "tsx": "^4.23.15",
     "typescript": "5.9.3",
     "vitest": "^5.0.3"

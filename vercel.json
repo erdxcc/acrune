@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "relayer": {
+      "root": "apps/relayer",
+      "framework": "hono",
+      "entrypoint": "src/vercel.ts"
+    }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": { "service": "relayer" } }
+  ]
+}
