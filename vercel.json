@@ -7,6 +7,9 @@
       "entrypoint": "src/vercel.ts"
     }
   },
+  "redirects": [
+    { "source": "/", "destination": "https://idosgames.com/app/BVTWU78A/", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": { "service": "relayer" } }
   ]
