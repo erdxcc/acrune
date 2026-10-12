@@ -106,7 +106,7 @@ It also cuts the spell flights (the four elements, steam, ice and magma) out of 
 ## Deployment
 
 - **Game.** `pnpm --filter @grimoire/game build`, zip the contents of `apps/game/dist` (with `index.html` at the root of the archive) and upload it through the iDos Title MCP (`begin_build_upload` → PUT → `finish_build_upload`). The title is detected from the host name (`{titleid}.idos.games`).
-- **Relayer.** A Vercel project for the whole repository: `vercel.json` declares one service, `relayer` (`apps/relayer`, Hono, entry `src/vercel.ts`), and sends every path to it, so the routes stay at the root of the domain. Vercel installs the workspace and bundles the entry. Set the variables from `apps/relayer/.env.example`, with `PUBLIC_BASE_URL` on the production address (preview deployments are behind Vercel's login by default), and add the relayer's host to the title's `Blockchain.IframeConnectHosts` so the game can reach it from inside the iframe. For local work use `pnpm dev`; `vercel dev` picks `src/app.ts` by Hono's file naming instead of the configured entry.
+- **Relayer.** A Vercel project for the whole repository: `vercel.json` declares one service, `relayer` (`apps/relayer`, Hono, entry `src/vercel.ts`), and sends every path to it, so the routes stay at the root of the domain. Vercel installs the workspace and bundles the entry; the root `package.json` pins `uuid` 11 under `rpc-websockets`, because Vercel's Node cannot `require()` the ES-only uuid 14. Set the variables from `apps/relayer/.env.example` except `PUBLIC_BASE_URL` (on Vercel, metadata links follow the project's production domain), and add the relayer's host to the title's `Blockchain.IframeConnectHosts` so the game can reach it from inside the iframe. For local work use `pnpm dev`; `vercel dev` picks `src/app.ts` by Hono's file naming instead of the configured entry.
 
 ## Environment variables
 
@@ -119,7 +119,7 @@ It also cuts the spell flights (the four elements, steam, ice and magma) out of 
 | `ASSET_SEED_SECRET` | relayer | Derives each wallet's grimoire address |
 | `TOKEN_HMAC_SECRET` | relayer | Signs run and progress tokens |
 | `COLLECTION_ADDRESS` | relayer | The Acrune Grimoires collection (`pnpm collection` creates it, or updates its name and URI when it exists) |
-| `PUBLIC_BASE_URL` | relayer | Public URL of the relayer, used in NFT metadata |
+| `PUBLIC_BASE_URL` | relayer | Public URL of the relayer, used in NFT metadata; on Vercel the production domain is used instead |
 | `GAME_URL` | relayer | The game's page, linked from the metadata |
 | `IDOS_API_BASE` | relayer | `https://api.idosgames.com` |
 | `ALLOWED_TITLES` | relayer | Comma-separated iDos title IDs the relayer serves |
